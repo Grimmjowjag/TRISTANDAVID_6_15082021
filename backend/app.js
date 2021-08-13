@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
 const stuffRoutes = require('./routes/stuff')
+const userRoutes = require('./routes/user')
 
 // Logique pour se connecter à MongoDB
 mongoose.connect('mongodb+srv://triton0074:noobolife75zz@cluster0.tb4tx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
@@ -25,6 +26,8 @@ app.use((req, res, next) => {
 // pourquoi bodyParser est-il déprécié? --- ///!!!\\\ ---
 app.use(bodyParser.json())
 
-app.use('/api/stuff', stuffRoutes);
+app.use('/api/stuff', stuffRoutes)
+app.use('/api/stuff', stuffRoutes)
+app.use('/api/auth', userRoutes)
 
 module.exports = app
