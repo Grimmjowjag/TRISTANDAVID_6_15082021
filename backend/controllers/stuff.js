@@ -1,4 +1,5 @@
 const Thing = require('../models/thing')
+const fs = require('fs')
 
 // ---- Début CRUD  ----
 
@@ -23,29 +24,30 @@ exports.getOneThing = (req, res, next) => {
 
 // Mise à jour du "Thing" (premier argument) grâce à "updateOne()" qui permet de modifier nos objets
 exports.modifyThing = (req, res, next) => {
-  const thing = new Thing({
-    _id: req.params.id,
-    title: req.body.title,
-    description: req.body.description,
-    imageUrl: req.body.imageUrl,
-    price: req.body.price,
-    userId: req.body.userId
-  })
+  const thingObject = req.file ?
+    {
+      ...JSON.parse(req.body.thing),
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } : { ...req.body }
   // Utilisation du paramètre "id" remplacé par "Thing" passé comme second argument
-  Thing.updateOne({_id: req.params.id}, thing).then(() => {
-      res.status(201).json({
-        message: 'Thing updated successfully!'})
-    })
-    .catch((error) => {res.status(400).json({error: error})
-    })
+  Thing.updateOne({ _id: req.params.id }, { ...thingObject, _id: req.params.id })
+    .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+    .catch(error => res.status(400).json({ error }))
 }
-
+ 
 // On passe un objet à "deleteOne()" correspondant au document à supprimer
 exports.deleteThing = (req, res, next) => {
-  Thing.deleteOne({_id: req.params.id}).then(() => {
-      res.status(200).json({message: 'Deleted!'})
+  Thing.findOne({ _id: req.params.id })
+    .then(thing => {
+      // On extrait le nom du fichier à supprimer
+      const filename = thing.imageUrl.split('/images/')[1]
+      fs.unlink(`images/${filename}`, () => {
+        Thing.deleteOne({ _id: req.params.id })
+          .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
+          .catch(error => res.status(400).json({ error }))
+      })
     })
-    .catch((error) => {res.status(400).json({error: error})})
+    .catch(error => res.status(500).json({ error }))
 }
 
 exports.getAllStuff = (req, res, next) => 
