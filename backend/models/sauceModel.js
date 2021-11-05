@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
-// Création du schéma de données avec les champs requis
+// Création du schéma de données avec les champs requis (ceci va simplifier les opérations de lecture et d'écriture dans la base de données)
+
 const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true },
   name: { type: String, required: true },

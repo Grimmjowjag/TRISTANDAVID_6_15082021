@@ -11,12 +11,13 @@ const userRoutes = require('./routes/user')
 const app = express()
 
 
-// ---- CORS (Cross-origin ressource sharing) ----
+// ---- CORS (Cross-origin ressource sharing nécéssaire ici car le front et le back ne partagent pas la même origine) ----
+
 // Premier Middleware éxécuté par le serveur (permet à l'application d'accéder à l'API sans problème depuis n'importe quelle origine)
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+  res.setHeader('Access-Control-Allow-Origin', '*') // "*" Permet l'accès à l'origine de notre API
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization') // Autorisation des headers spécifiés
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS') // Autorisation des requêtes spécifiées
   next()
 })
 
@@ -25,10 +26,10 @@ const rateLimit = require("express-rate-limit")
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 1000, // limit each IP to 100 requests per windowMs
-  message:"Too many requests, please try after 15 minutes"
+  message:"Trop de requêtes effectuées, veuillez réessayer dans 15 minutes"
 })
 
-//  apply to all requests
+// Appliqué à toutes les requêtes
 app.use(limiter)
 
 // Logique pour se connecter à MongoDB
@@ -39,7 +40,7 @@ mongoose.connect(mongooseConnect,
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'))
 
-app.use(bodyParser.json())
+app.use(bodyParser.json()) // bodyParser transforme le corps de la requête en JSON utilisable
 
 app.use('/images', express.static(path.join(__dirname, 'images')))
 
