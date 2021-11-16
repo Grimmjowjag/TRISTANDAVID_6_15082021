@@ -1,3 +1,6 @@
+"use strict"
+
+// Package qui va vérifier les tokens d'authentification
 const jwt = require('jsonwebtoken')
 
 module.exports = (req, res, next) => {
@@ -6,7 +9,8 @@ module.exports = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1]
     // On décode le token et on le vérifie
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET')
-    const userId = decodedToken.userId;
+    const userId = decodedToken.userId
+
     // Vérification que la requête correspond bien à celle du token -> userId valide ou non
     if (req.body.userId && req.body.userId !== userId) {
       throw 'User ID non valable'

@@ -1,6 +1,7 @@
+"use strict"
+
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-
 const User = require('../models/User')
 
 // Enregistrement de nouveaux utilisateurs
@@ -27,14 +28,14 @@ exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
       .then(user => {
         if (!user) {
-          return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+          return res.status(401).json({ error: 'Utilisateur non trouvé !' })
         }
         // On compare le mot de passe envoyé avec la requête avec le "hash" enregistré dans notre doc user
         bcrypt.compare(req.body.password, user.password)
         // On vérifie si la comparaison est valable ou non -> bon/mauvais mdp
           .then(valid => {
             if (!valid) {
-              return res.status(401).json({ error: 'Mot de passe incorrect !' });
+              return res.status(401).json({ error: 'Mot de passe incorrect !' })
             }
             // On renvoie un statut "200" pour une bonne connection avec un userId et un token encodé/crypté (permet la connection)
             res.status(200).json({
@@ -47,7 +48,7 @@ exports.login = (req, res, next) => {
             });
           })
           // Erreur possible avec MongoDB -> erreur serveur 500
-          .catch(error => res.status(500).json({ error }));
+          .catch(error => res.status(500).json({ error }))
       })
-      .catch(error => res.status(500).json({ error }));
-  };
+      .catch(error => res.status(500).json({ error }))
+  }

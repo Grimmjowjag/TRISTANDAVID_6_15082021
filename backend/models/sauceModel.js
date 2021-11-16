@@ -1,7 +1,8 @@
+"use strict"
+
 const mongoose = require('mongoose')
 
 // Création du schéma de données avec les champs requis (ceci va simplifier les opérations de lecture et d'écriture dans la base de données)
-
 const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true },
   name: { type: String, required: true },
@@ -10,10 +11,10 @@ const sauceSchema = mongoose.Schema({
   mainPepper: { type: String, required: true },
   imageUrl: { type: String, required: true },
   heat: { type: Number, required: true },
-  likes: { type: Number, required: true },
-  dislikes: { type: Number, required: true },
-  usersLiked: { type: ["String <userId>"], required: true },
-  usersDisliked: { type: ["String <userId>"], required: true },
+  likes: {type: Number, default: 0},
+  dislikes: {type: Number, default: 0},
+  usersLiked: {type: Array, default: []},
+  usersDisliked: {type: Array, default: []},
 })
 
 // On exporte le modèle correspondant
