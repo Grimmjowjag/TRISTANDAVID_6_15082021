@@ -1,6 +1,6 @@
 
 
-Bienvenue sur le Repo du Projet 6 So Peckoko du parcours Développeur Web d'OpenClassrooms.
+Bienvenue sur le Repo du Projet 6 Piiquante du parcours Développeur Web d'OpenClassrooms.
 
 Pour lancer l'environnement,
 
