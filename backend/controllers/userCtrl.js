@@ -30,7 +30,7 @@ exports.login = (req, res, next) => {
         if (!user) {
           return res.status(401).json({ error: 'Utilisateur non trouvé !' })
         }
-        // On compare le mot de passe envoyé avec la requête avec le "hash" enregistré dans notre doc user
+        // On compare le mot de passe envoyé avec la requête du "hash" enregistré dans notre doc user
         bcrypt.compare(req.body.password, user.password)
         // On vérifie si la comparaison est valable ou non -> bon/mauvais mdp
           .then(valid => {

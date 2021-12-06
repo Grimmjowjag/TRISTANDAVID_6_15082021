@@ -1,10 +1,9 @@
 const express = require('express')
 const router = express.Router()
 
+const saucesCtrl = require('../controllers/sauces')
 const auth = require('../middleware/auth')
 const multer = require('../middleware/multer-config')
-
-const saucesCtrl = require('../controllers/sauces')
 
 // Pour protéger nos routes, on ajoute un middleware "auth" 
 router.get('/', auth, saucesCtrl.getAllSauces)
