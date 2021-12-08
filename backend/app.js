@@ -41,21 +41,6 @@ mongoose.connect(mongooseConnect,
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'))
 
-// Renforcement du mot de passe avec validator.js (test)
-const validator = require('validator')
-
-const userPassword = mongoose.model('userPassword',{
-  password: {
-    type: String,
-    required: true,
-    validate(value){
-      if(!validator.isStrongPassword(value)){
-        throw new Error('Veuillez entrer un mot de passe au bon format')
-      }
-    }
-  }
-})
-
 app.use(bodyParser.json()) // bodyParser transforme le corps de la requête en JSON utilisable
 
 app.use('/images', express.static(path.join(__dirname, 'images')))
