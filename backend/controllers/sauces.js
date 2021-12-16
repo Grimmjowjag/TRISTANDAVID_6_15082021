@@ -30,7 +30,7 @@ exports.modifySauce = (req, res, next) => {
   const sauceObject = req.file 
     ? //permet de vérifier si la requête contient une nouvelle image si req.file = true
     {
-      ...JSON.parse(req.body.sauce), //S'il y a une nouvelle image
+      ...JSON.parse(req.body.sauce), //S'il y a une nouvelle image, on parse avec ...JSON.parse
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } 
     : { ...req.body } // si false -> req.body
